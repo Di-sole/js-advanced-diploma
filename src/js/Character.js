@@ -7,4 +7,8 @@ export default class Character {
     this.type = type;
     // TODO: throw error if user use "new Character()"
   }
+
+  levelUp() {
+    this.level += 1;
+  }
 }
