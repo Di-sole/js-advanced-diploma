@@ -1,35 +1,46 @@
 import { playerTypes, computerTypes } from './allowedTypes';
-import { generateTeam, generatePlayerPosition, generateComputerPosition } from './generators';
+import { generateTeam, generatePlayerPositions, generateComputerPositions } from './generators';
 import PositionedCharacter from './PositionedCharacter';
 
 export default class Team {
   constructor() {
-    this.allCharacters = [];
     this.computerTeam = [];
     this.playerTeam = [];
   }
 
-  createStartTeams(boardSize) {
-    const playerTeam = generateTeam(playerTypes, 1, 2);
-    const computerTeam = generateTeam(computerTypes, 1, 2);
-    const arr1 = [];
-    const arr2 = [];
+  get allCharacters() {
+    return this.computerTeam.concat(this.playerTeam);
+  }
 
-    playerTeam.forEach((elem) => {
-      const position = generatePlayerPosition(boardSize);
-      arr1.push(new PositionedCharacter(elem, position));
+  createComputerTeam(maxLevel, characterCount, boardSize = 8) {
+    const team = generateTeam(computerTypes, maxLevel, characterCount);
+    const positions = generateComputerPositions(boardSize);
+
+    team.forEach((elem) => {
+      const i = Math.floor(Math.random() * positions.length);
+      this.computerTeam.push(new PositionedCharacter(elem, positions[i]));
+      positions.splice(i, 1);
     });
+  }
 
-    computerTeam.forEach((elem) => {
-      const position = generateComputerPosition(boardSize);
-      arr2.push(new PositionedCharacter(elem, position));
+  createPlayerTeam(maxLevel, characterCount, boardSize = 8) {
+    const team = generateTeam(playerTypes, maxLevel, characterCount);
+    const positions = generatePlayerPositions(boardSize);
+
+    team.forEach((elem) => {
+      const i = Math.floor(Math.random() * positions.length);
+      this.playerTeam.push(new PositionedCharacter(elem, positions[i]));
+      positions.splice(i, 1);
     });
+  }
 
-    this.allCharacters = arr1.concat(arr2);
-    this.playerTeam = arr1;
-    this.computerTeam = arr2;
+  repositionPlayerTeam(boardSize = 8) {
+    const positions = generatePlayerPositions(boardSize);
+
+    for (let i = 0; i < this.playerTeam.length; i += 1) {
+      const index = Math.floor(Math.random() * positions.length);
+      this.playerTeam[i].position = positions[index];
+      positions.splice(index, 1);
+    }
   }
 }
-
-const team = new Team();
-export { team };

@@ -1,17 +1,11 @@
 export default class GameState {
   constructor() {
-    this.activePlayer = 0;
     this.activeChar = '';
     this.activeCharIndex = 0;
     this.activeCellIndex = 0;
     this.isActive = false;
-  }
-
-  static from(object) {
-    // TODO: create object
-    return null;
+    this.points = 0;
+    this.maxPoints = 0;
+    this.level = 1;
   }
 }
-
-const gameState = new GameState();
-export { gameState };

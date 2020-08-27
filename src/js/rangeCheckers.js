@@ -1,17 +1,18 @@
 import { generateAllowedRange } from './generators';
 import { calcAllowedIndices } from './utils';
 
-export function checkAttackRange(attackerIndex, targetIndex, attackRange, boardSize) {
+export function checkAttackRange(attackerIndex, targetIndex, attackRange, boardSize = 8) {
   const columns = generateAllowedRange(attackerIndex, attackRange, boardSize);
-  const allowedCells = columns.flat(1);
+  const cells = columns.flat(1);
+  const allowedCells = cells.filter((elem) => elem >= 0 && elem < boardSize ** 2);
 
   return allowedCells.some((elem) => elem === targetIndex);
 }
 
-export function checkMoveRange(startIndex, targetIndex, moveRange, boardSize) {
+export function checkMoveRange(startIndex, targetIndex, moveRange, boardSize = 8) {
   const columns = generateAllowedRange(startIndex, moveRange, boardSize);
   const indices = calcAllowedIndices(moveRange);
-  const allowedCells = [];
+  const cells = [];
 
   const currentLine = Math.floor(startIndex / boardSize);
   const currentColumn = Math.floor(startIndex - (currentLine * boardSize));
@@ -21,7 +22,7 @@ export function checkMoveRange(startIndex, targetIndex, moveRange, boardSize) {
     for (let i = 0; i < columns.length; i += 1) {
       for (let j = 0; j < indices[i].length; j += 1) {
         const index = indices[i][j];
-        allowedCells.push(columns[i][index]);
+        cells.push(columns[i][index]);
       }
     }
   } else {
@@ -29,10 +30,12 @@ export function checkMoveRange(startIndex, targetIndex, moveRange, boardSize) {
     for (let i = columns.length - 1; i >= 0; i -= 1) {
       for (let j = indices[i + diff].length - 1; j >= 0; j -= 1) {
         const index = indices[i + diff][j];
-        allowedCells.push(columns[i][index]);
+        cells.push(columns[i][index]);
       }
     }
   }
+
+  const allowedCells = cells.filter((elem) => elem >= 0 && elem < boardSize ** 2);
 
   return allowedCells.some((elem) => elem === targetIndex);
 }

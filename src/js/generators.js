@@ -24,9 +24,8 @@ export function generateTeam(allowedTypes, maxLevel, characterCount) {
   return team;
 }
 
-// Generates random character's position
-
-export function generatePlayerPosition(boardSize) {
+// Generates allowed character's positions
+export function generatePlayerPositions(boardSize = 8) {
   const positions = [];
 
   for (let i = 0; i < boardSize ** 2; i += 1) {
@@ -36,12 +35,10 @@ export function generatePlayerPosition(boardSize) {
     }
   }
 
-  const i = Math.floor(Math.random() * positions.length);
-
-  return positions[i];
+  return positions;
 }
 
-export function generateComputerPosition(boardSize) {
+export function generateComputerPositions(boardSize = 8) {
   const positions = [];
 
   for (let i = 0; i < boardSize ** 2; i += 1) {
@@ -51,15 +48,12 @@ export function generateComputerPosition(boardSize) {
     }
   }
 
-  const i = Math.floor(Math.random() * positions.length);
-
-  return positions[i];
+  return positions;
 }
 
 // генерирует допустимые клетки для действия
 // возвращает массив клеток, разбитых по колонкам
-
-export function generateAllowedRange(index, range, boardSize) {
+export function generateAllowedRange(index, range, boardSize = 8) {
   const currentLine = Math.floor(index / boardSize);
   const startLine = currentLine - range;
 
